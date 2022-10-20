@@ -15,6 +15,24 @@ pipeline{
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+	stage("Test"){
+            steps{
+                echo "========executing Test stage========"
+                sh 'mvn test'
+            }
+            post{
+                always{
+                    echo "========executing always stage========"
+                    junit 'target/surefire-reports/*xml'
+                }
+                success{
+                    echo "========pass stage========"
+                }
+                failure{
+                    echo "========failed stage========"
+                }
+            }
+        }
     }
    
 }
